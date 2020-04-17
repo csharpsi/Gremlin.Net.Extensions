@@ -3,8 +3,8 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1
 ARG SLN=Gremlin.Net.Extensions.sln
 ARG PROJECT_PATH=Gremlin.Net.Extensions
 ARG PROJECT=Gremlin.Net.Extensions.csproj
+ARG BUILD_VERSION
 
-ENV BUILD_VERSION ""
 ENV NUGET_API_KEY ""
 
 COPY . /src

@@ -14,4 +14,6 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: build using docker
-        run: docker build -t package -e "BUILD_VERSION=${{github.sha}}" -e "NUGET_API_KEY=${{secrets.NUGET_API_KEY}}"
+        run: docker build -t package . --build-arg "BUILD_VERSION=${{github.sha}}"
+      - name: debug
+        run: echo ${{secrets.NUGET_API_KEY}}
