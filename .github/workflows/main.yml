@@ -10,7 +10,7 @@ on:
 jobs:
   docker_build:
     runs-on: ubuntu-latest
-    name: Build and publish nupkg image
+    name: CI/CD Pipeline
     steps:
       - uses: actions/checkout@v2
       
@@ -28,6 +28,7 @@ jobs:
       
       - name: build using docker
         run: docker build -t package . --build-arg "BUILD_VERSION=${{ steps.gitversion.outputs.semVer }}"
-
-      - name: debug
-        run: echo ${{secrets.NUGET_API_KEY}}
+        
+      - name: publish nuget package
+        run: docker run -e "NUGET_API_KEY=${{secrets.NUGET_API_KEY}}" package
+        if: github.ref == 'refs/heads/master'
