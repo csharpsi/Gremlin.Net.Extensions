@@ -10,8 +10,6 @@ ENV NUGET_API_KEY ""
 COPY . /src
 WORKDIR /src
 
-RUN build/install-gitversion.sh
-RUN build/get-gitversion.sh
 RUN dotnet restore $SLN
 RUN dotnet build $SLN -c Release --no-restore
 RUN dotnet test $SLN --no-restore
