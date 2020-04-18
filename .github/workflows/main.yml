@@ -8,27 +8,14 @@ on:
       - master
 
 jobs:
-  docker_build:
+  build:
     runs-on: ubuntu-latest
-    name: CI/CD Pipeline
+    name: Build package
     steps:
-      - uses: actions/checkout@v2
-      
-      - name: fetch history
-        run: git fetch --prune --unshallow
-      
-      - name: install GitVersion
-        uses: gittools/actions/gitversion/setup@v0.9.2
-        with:
-            versionSpec: '5.2.x'
-      
-      - name: use GitVersion
-        id: gitversion
-        uses: gittools/actions/gitversion/execute@v0.9.2
-      
-      - name: build using docker
-        run: docker build -t ${{ github.sha }} . --build-arg "BUILD_VERSION=${{ steps.gitversion.outputs.nuGetVersion }}"
-        
-      - name: publish nuget package
+      - name: checkout source
+        uses: actions/checkout@v2      
+      - name: build docker image
+        run: docker build -t ${{ github.sha }} . --build-arg "BUILD_VERSION=0.1.${{ github.run_number }}"
+      - name: run docker image
         run: docker run -e "NUGET_API_KEY=${{secrets.NUGET_API_KEY}}" ${{ github.sha }}
         if: github.ref == 'refs/heads/master'
