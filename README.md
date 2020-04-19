@@ -1,6 +1,6 @@
 # Gremlin.Net.Extensions
 
-An extension framework to make building Gremlin.Net queries for CosmosDB less painful. 
+An extension framework to make building Gremlin.Net queries for CosmosDB a little less painful. 
 
 Until CosmosDB supports Bytecode, it is necessary to write gremlin queries as strings. This lightweight extension framework will convert Bytecode into a useable query string.
 
@@ -10,7 +10,7 @@ Convert any `ITraversal` into a `GremlinQuery` object by calling `.ToGremlinQuer
 Example:
 ```
 var g = AnonymousTraversalSource.Traversal();
-string query = g.V("thomas").OutE("knows").Where(InV().Has("id", "mary")).Drop().ToGremlinQuery();
+string query = g.V("thomas").OutE("knows").Where(__.InV().Has("id", "mary")).Drop().ToGremlinQuery();
 
 // query will be "g.V('thomas').outE('knows').where(inV().has('id', 'mary')).drop()"
 ```
