@@ -1,8 +1,16 @@
 # Gremlin.Net.Extensions
 
+[![Actions Status](https://github.com/csharpsi/Gremlin.Net.Extensions/workflows/Build%20package%20and%20push/badge.svg)](https://github.com/csharpsi/Gremlin.Net.Extensions/actions)
+
 An extension framework to make building Gremlin.Net queries for CosmosDB a little less painful. 
 
 Until CosmosDB supports Bytecode, it is necessary to write gremlin queries as strings. This lightweight extension framework will convert Bytecode into a useable query string.
+
+## Install
+
+```
+Install-Package Gremlin.Net.Extensions
+```
 
 ## Usage
 Convert any `ITraversal` into a `GremlinQuery` object by calling `.ToGremlinQuery()`
@@ -25,6 +33,8 @@ var query = g.AddV("Organisation").Property("id", "acme-inc").Property("name", "
 // ["id"] = "acme-inc"
 // ["name"] = "Acme Inc
 ```
+
+[More examples can be found in the tests](https://github.com/csharpsi/Gremlin.Net.Extensions/blob/master/test/Gremlin.Net.Extensions.Tests/BytecodeExtensionsTests.cs)
 
 With your query constructed, you can pass the string result into the gremlin client call:
 ```
