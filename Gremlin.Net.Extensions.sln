@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30002.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gremlin.Net.Extensions", "Gremlin.Net.Extensions\Gremlin.Net.Extensions.csproj", "{04F758D7-7C8B-4782-BA36-B82F621A20AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gremlin.Net.Extensions", "src\Gremlin.Net.Extensions\Gremlin.Net.Extensions.csproj", "{04F758D7-7C8B-4782-BA36-B82F621A20AD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gremlin.Net.Extensions.Tests", "Gremlin.Net.Extensions.Tests\Gremlin.Net.Extensions.Tests.csproj", "{62DE0E45-66E4-4165-80CF-AF499FB99E5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gremlin.Net.Extensions.Tests", "test\Gremlin.Net.Extensions.Tests\Gremlin.Net.Extensions.Tests.csproj", "{62DE0E45-66E4-4165-80CF-AF499FB99E5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
