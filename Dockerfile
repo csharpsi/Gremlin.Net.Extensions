@@ -14,4 +14,4 @@ RUN dotnet test Gremlin.Net.Extensions.sln --no-restore
 WORKDIR /var/build/src/Gremlin.Net.Extensions
 RUN dotnet pack Gremlin.Net.Extensions.csproj -c Release --include-symbols --no-build --output /var/packages -p:PackageVersion=$BUILD_VERSION
 
-ENTRYPOINT dotnet nuget push /var/packages/*.nupkg -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json
+ENTRYPOINT dotnet nuget push /var/packages/*.nupkg -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json --skip-duplicate
