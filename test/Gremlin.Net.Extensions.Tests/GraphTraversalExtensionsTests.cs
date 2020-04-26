@@ -44,14 +44,39 @@ namespace Gremlin.Net.Extensions.Tests
                 .To(_g.AddV("Organisation").Property("id", "some-other-company").Property("name", "Some other company"))
                 .ToGremlinQuery();
 
-            query.ToString().Should().Be("g.addV('Organisation').property('id', id).property('name', name).addE('linked_to').to(g.addV('Organisation').property('id', 1_id).property('name', 1_name))");
+            query.ToString().Should().Be("g.addV('Organisation').property('id', id).property('name', name).addE('linked_to').to(g.addV('Organisation').property('id', id_1).property('name', name_1))");
 
             IReadOnlyDictionary<string, object> expectedArguments = new Dictionary<string, object>
             {
                 ["id"] = "acme-inc",
                 ["name"] = "Acme Inc",
-                ["1_id"] = "some-other-company",
-                ["1_name"] = "Some other company"
+                ["id_1"] = "some-other-company",
+                ["name_1"] = "Some other company"
+            };
+
+            query.Arguments.Should().BeEquivalentTo(expectedArguments);
+        }
+
+        [Fact]
+        public void TestToGremlinQueryWithMultilayerInnerPropertyTraversal()
+        {
+            var query = _g
+                .AddV("Organisation")
+                .Property("id", "acme-inc")
+                .Property("name", "Acme Inc")
+                .AddE("linked_to")
+                .To(_g.AddV("Organisation").Property("id", "some-other-company").Property("name", "Some other company").AddE("linked_to").To(_g.AddV("Company").Property("name", "some inner name")))
+                .ToGremlinQuery();
+
+            query.ToString().Should().Be("g.addV('Organisation').property('id', id).property('name', name).addE('linked_to').to(g.addV('Organisation').property('id', id_1).property('name', name_1).addE('linked_to').to(g.addV('Company').property('name', name_2)))");
+
+            IReadOnlyDictionary<string, object> expectedArguments = new Dictionary<string, object>
+            {
+                ["id"] = "acme-inc",
+                ["name"] = "Acme Inc",
+                ["id_1"] = "some-other-company",
+                ["name_1"] = "Some other company",
+                ["name_2"] = "some inner name"
             };
 
             query.Arguments.Should().BeEquivalentTo(expectedArguments);
