@@ -57,7 +57,7 @@ namespace Gremlin.Net.Extensions
 
                             if (innerArgIndex.HasValue)
                             {
-                                key = $"{innerArgIndex.Value}_{key}";
+                                key = $"{key}_{innerArgIndex.Value}";
                             }
 
                             arguments.Add(key, value);
