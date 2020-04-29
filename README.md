@@ -1,6 +1,6 @@
 # Gremlin.Net.Extensions
 
-[![Actions Status](https://github.com/csharpsi/Gremlin.Net.Extensions/workflows/Build%20package%20and%20push/badge.svg)](https://github.com/csharpsi/Gremlin.Net.Extensions/actions)
+[![Actions Status](https://github.com/csharpsi/Gremlin.Net.Extensions/workflows/Build/badge.svg)](https://github.com/csharpsi/Gremlin.Net.Extensions/actions)
 
 An extension framework to make building Gremlin.Net queries for CosmosDB a little less painful. 
 
