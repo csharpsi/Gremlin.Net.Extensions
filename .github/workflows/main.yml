@@ -1,6 +1,9 @@
-name: Build package and push
+name: Build package
 on:
   push:
+    branches:
+      - master
+      - 'feature/**'
     paths-ignore:
       - 'docs/**'
       - 'README.md'
@@ -9,27 +12,23 @@ jobs:
   build:
     runs-on: ubuntu-latest
     name: Build package
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
     steps:
       - name: Checkout Source
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2        
 
-      - name: Fetch history
-        run: git fetch --prune --unshallow
-
-      - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v0.9.2
+      - name: Check version
+        id: version
+        uses: rymndhng/release-on-push-action@master
         with:
-          versionSpec: '5.2.x'
+          bump_version_scheme: patch
+    
+      - run: echo Version = ${{ steps.version.outputs.tag_name }}
 
-      - name: Get Version
-        id: gitversion
-        uses: gittools/actions/gitversion/execute@v0.9.2
+      - name: Build Docker image
+        run: docker build -t ${{ github.sha }} . --build-arg "BUILD_VERSION=${{ steps.version.outputs.tag_name }}"
 
-      - run: echo "NuGet Version = ${{ steps.gitversion.outputs.nuGetVersionV2 }}"
-
-      - name: 
-        run: docker build -t ${{ github.sha }} . --build-arg "BUILD_VERSION=${{ steps.gitversion.outputs.nuGetVersionV2 }}"
-
-      - name: run docker image
-        run: docker run -e "NUGET_API_KEY=${{secrets.NUGET_API_KEY}}" ${{ github.sha }}
-        if: 
+      # - name: run docker image
+      #   run: docker run -e "NUGET_API_KEY=${{secrets.NUGET_API_KEY}}" ${{ github.sha }}
+      #   if: github.ref == 'refs/heads/master'

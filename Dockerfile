@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1
 
-ARG BUILD_VERSION=0.1.0
+ARG BUILD_VERSION
 
 ENV NUGET_API_KEY ""
 
