@@ -1,9 +1,5 @@
 name: Build
-on:
-  push:
-    branches:
-      - master
-      - 'feature/**'
+on:        
   pull_request:
     paths-ignore:
       - 'docs/**'
