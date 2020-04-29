@@ -1,4 +1,4 @@
-name: Verify Build
+name: Build
 on:
   push:
     branches:
