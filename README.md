@@ -1,6 +1,7 @@
 # Gremlin.Net.Extensions
 
 [![Actions Status](https://github.com/csharpsi/Gremlin.Net.Extensions/workflows/Build/badge.svg)](https://github.com/csharpsi/Gremlin.Net.Extensions/actions)
+[![Nuget Version](https://img.shields.io/nuget/v/Gremlin.Net.Extensions)](https://nuget.org/packages/Gremlin.Net.Extensions)
 
 An extension framework to make building Gremlin.Net queries for CosmosDB a little less painful. 
 
@@ -10,6 +11,12 @@ Until CosmosDB supports Bytecode, it is necessary to write gremlin queries as st
 
 ```
 Install-Package Gremlin.Net.Extensions
+```
+
+Or using the CLI
+
+```
+dotnet add package Gremlin.Net.Extensions
 ```
 
 ## Usage
