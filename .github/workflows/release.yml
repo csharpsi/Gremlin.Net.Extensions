@@ -1,10 +1,14 @@
 name: Release package
 on:
   push:
+    paths-ignore:
+      - 'docs/**'
+      - 'README.md'
     branches:
       - master
     tags:
       - '*'
+    
 jobs:
   build:
     runs-on: ubuntu-latest
