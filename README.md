@@ -23,7 +23,7 @@ dotnet add package Gremlin.Net.Extensions
 Convert any `ITraversal` into a `GremlinQuery` object by calling `.ToGremlinQuery()`
 
 Example:
-```
+```c#
 var g = AnonymousTraversalSource.Traversal();
 string query = g.V("thomas").OutE("knows").Where(__.InV().Has("id", "mary")).Drop().ToGremlinQuery();
 
@@ -31,7 +31,7 @@ string query = g.V("thomas").OutE("knows").Where(__.InV().Has("id", "mary")).Dro
 ```
 
 Properties are map to arguments:
-```
+```c#
 var g = AnonymousTraversalSource.Traversal();
 var query = g.AddV("Organisation").Property("id", "acme-inc").Property("name", "Acme Inc").ToGremlinQuery();
 
@@ -44,7 +44,7 @@ var query = g.AddV("Organisation").Property("id", "acme-inc").Property("name", "
 [More examples can be found in the tests](https://github.com/csharpsi/Gremlin.Net.Extensions/blob/master/test/Gremlin.Net.Extensions.Tests/BytecodeExtensionsTests.cs)
 
 With your query constructed, you can pass the string result into the gremlin client call:
-```
+```c#
 var result = await gremlinClient.SubmitAsync<dynamic>(query.ToString());
 
 // or with arguments...
