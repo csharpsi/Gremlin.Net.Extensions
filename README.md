@@ -41,7 +41,7 @@ var query = g.AddV("Organisation").Property("id", "acme-inc").Property("name", "
 // ["name"] = "Acme Inc
 ```
 
-[More examples can be found in the tests](https://github.com/csharpsi/Gremlin.Net.Extensions/blob/master/test/Gremlin.Net.Extensions.Tests/BytecodeExtensionsTests.cs)
+[More examples can be found in the tests](https://github.com/csharpsi/Gremlin.Net.Extensions/blob/master/test/Gremlin.Net.Extensions.Tests/GraphTraversalExtensionsTests.cs)
 
 With your query constructed, you can pass the string result into the gremlin client call:
 ```c#
