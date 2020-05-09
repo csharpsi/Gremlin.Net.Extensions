@@ -30,7 +30,7 @@ string query = g.V("thomas").OutE("knows").Where(__.InV().Has("id", "mary")).Dro
 // query will be "g.V('thomas').outE('knows').where(inV().has('id', 'mary')).drop()"
 ```
 
-Properties are map to arguments:
+Properties are mapped to arguments:
 ```c#
 var g = AnonymousTraversalSource.Traversal();
 var query = g.AddV("Organisation").Property("id", "acme-inc").Property("name", "Acme Inc").ToGremlinQuery();
