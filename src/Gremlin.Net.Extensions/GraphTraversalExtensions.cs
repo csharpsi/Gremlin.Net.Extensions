@@ -38,16 +38,21 @@ namespace Gremlin.Net.Extensions
                     if (((object)step.Arguments.First()).GetType().Name.StartsWith("GraphTraversal"))
                     {
                         var index = innerArgIndex ?? 0;
-
-                        var innerTraversal = (ITraversal)step.Arguments[0];
-                        var innerQuery = BuildGremlinQuery(innerTraversal, step.OperatorName == "to", index + 1);
-
-                        foreach (var innerArg in innerQuery.Arguments)
+                        foreach (var innerStep in step.Arguments)
                         {
-                            arguments.Add(innerArg.Key, innerArg.Value);
+                            var innerTraversal = (ITraversal)innerStep;
+                            var innerQuery = BuildGremlinQuery(innerTraversal, step.OperatorName == "to", index + 1);
+
+                            foreach (var innerArg in innerQuery.Arguments)
+                            {
+                                arguments.Add(innerArg.Key, innerArg.Value);
+                            }
+
+                            if (!innerArgIndex.HasValue && index > 0) builder.Append(", ");
+                            builder.Append(innerQuery.ToString());
+                            index++;
                         }
 
-                        builder.Append(innerQuery.ToString());
                     }
                     else
                     {

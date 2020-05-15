@@ -136,5 +136,17 @@ namespace Gremlin.Net.Extensions.Tests
 
             query.Should().Be("g.V('thomas').repeat(out()).until(has('id', 'robin')).path()");
         }
+
+        [Fact]
+        public void TestToGremlinQueryCoalesce()
+        {
+            string query = _g.V("thomas")
+                .Coalesce<string>(
+                    Has("id", "robin"),
+                    Has("id", "leon"))
+                .ToGremlinQuery();
+
+            query.Should().Be("g.V('thomas').coalesce(has('id', 'robin'), has('id', 'leon'))");
+        }
     }
 }
