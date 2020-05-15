@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Gremlin.Net.Process.Traversal;
+using Gremlin.Net.Structure;
+using ServiceStack;
 
 namespace Gremlin.Net.Extensions
 {
@@ -94,6 +97,16 @@ namespace Gremlin.Net.Extensions
             }
 
             return arg.ToString();
+        }
+
+        public static GraphTraversal<Vertex, Vertex> SetProperties<T>(this GraphTraversal<Vertex, Vertex> source, T dataObject)
+        {
+            var dict = dataObject.ToObjectDictionary();
+            foreach (var key in dict.Keys)
+            {
+                source.Bytecode.AddStep("property", key, dict[key]?.ToString());
+            }
+            return source;
         }
     }
 }

@@ -136,5 +136,34 @@ namespace Gremlin.Net.Extensions.Tests
 
             query.Should().Be("g.V('thomas').repeat(out()).until(has('id', 'robin')).path()");
         }
+
+        [Fact]
+        public void TestSetProperties()
+        {
+            var customer = new Customer("John");
+            var query = _g
+                .AddV(nameof(Customer))
+                .SetProperties(customer)
+                .ToGremlinQuery();
+
+            query.ToString().Should().Be("g.addV('Customer').property('Id', Id).property('Name', Name)");
+
+            IReadOnlyDictionary<string, object> expectedArguments = new Dictionary<string, object>
+            {
+                ["Id"] = "00000000-0000-0000-0000-000000000000",
+                ["Name"] = "John"
+            };
+
+            query.Arguments.Should().BeEquivalentTo(expectedArguments);
+        }
+
+        internal class Customer
+        {
+            public Guid Id { get; set; }
+            public string Name { get; set; }
+
+            public Customer(string name) => (Id, Name) = (Guid.Empty, name);
+        }
+
     }
 }
