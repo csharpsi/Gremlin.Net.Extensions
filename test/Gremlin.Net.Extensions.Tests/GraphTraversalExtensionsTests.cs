@@ -93,9 +93,14 @@ namespace Gremlin.Net.Extensions.Tests
         [Fact]
         public void TestToGremlinQueryComplex()
         {
-            string query = _g.V("thomas").OutE("knows").Where(InV().Has("id", "mary")).Drop().ToGremlinQuery();
+            var query = _g.V("thomas").OutE("knows").Where(InV().Has("id", "mary")).Drop().ToGremlinQuery();
             
-            query.Should().Be("g.V('thomas').outE('knows').where(inV().has('id', 'mary')).drop()");
+            query.ToString().Should().Be("g.V('thomas').outE('knows').where(inV().has('id', id_1)).drop()");
+
+            query.Arguments
+                .Should().HaveCount(1)
+                .And
+                .Contain(new KeyValuePair<string, object>("id_1", "mary"));
         }
 
         [Fact]
@@ -132,21 +137,35 @@ namespace Gremlin.Net.Extensions.Tests
         [Fact]
         public void TestToGremlinQueryLoop()
         {
-            string query = _g.V("thomas").Repeat(Out()).Until(Has("id", "robin")).Path().ToGremlinQuery();
+            var query = _g.V("thomas").Repeat(Out()).Until(Has("id", "robin")).Path().ToGremlinQuery();
 
-            query.Should().Be("g.V('thomas').repeat(out()).until(has('id', 'robin')).path()");
+            query.ToString().Should().Be("g.V('thomas').repeat(out()).until(has('id', id_1)).path()");
+
+            query.Arguments
+                .Should().HaveCount(1)
+                .And
+                .Contain(new KeyValuePair<string, object>("id_1", "robin"));
         }
 
         [Fact]
         public void TestToGremlinQueryCoalesce()
         {
-            string query = _g.V("thomas")
+            var query = _g.V("thomas")
                 .Coalesce<string>(
                     Has("id", "robin"),
                     Has("id", "leon"))
                 .ToGremlinQuery();
 
-            query.Should().Be("g.V('thomas').coalesce(has('id', 'robin'), has('id', 'leon'))");
+            query.ToString().Should().Be("g.V('thomas').coalesce(has('id', id_1), has('id', id_2))");
+
+            IReadOnlyDictionary<string, object> expectedArguments = new Dictionary<string, object>
+            {
+                ["id_1"] = "robin",
+                ["id_2"] = "leon"
+            };
+
+            query.Arguments.Should().BeEquivalentTo(expectedArguments);
+
         }
     }
 }

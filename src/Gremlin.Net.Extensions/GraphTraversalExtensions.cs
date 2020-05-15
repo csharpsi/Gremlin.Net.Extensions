@@ -56,7 +56,8 @@ namespace Gremlin.Net.Extensions
                     }
                     else
                     {
-                        if (step.OperatorName == "property")
+                        if (step.OperatorName == "property" || 
+                            (step.OperatorName == "has" && step.Arguments.Last() is string))
                         {
                             var (key, value) = ((string)step.Arguments.First(), (object)step.Arguments.Last());
 
