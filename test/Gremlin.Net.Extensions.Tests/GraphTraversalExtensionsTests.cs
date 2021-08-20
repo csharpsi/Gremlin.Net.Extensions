@@ -167,5 +167,13 @@ namespace Gremlin.Net.Extensions.Tests
             query.Arguments.Should().BeEquivalentTo(expectedArguments);
 
         }
+
+        [Fact]
+        public void TestToGremlinQueryBooleanTranslation()
+        {
+            var query = _g.V("customer").ValueMap<string, object>(true).ToGremlinQuery();
+
+            query.ToString().Should().Be("g.V('customer').valueMap(true)");
+        }
     }
 }
