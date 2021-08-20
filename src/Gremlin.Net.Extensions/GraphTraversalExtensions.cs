@@ -94,6 +94,11 @@ namespace Gremlin.Net.Extensions
                 return $"'{Regex.Replace(a, @"[^\w\s-]", "")}'";
             }
 
+            if (arg is bool b)
+            {
+                return b ? "true" : "false";
+            }
+
             if (arg.GetType().GetProperties().Where(x => x.CanRead).Any(x => x.Name == "EnumValue"))
             {
                 return arg.GetType().GetProperty("EnumValue")?.GetValue(arg)?.ToString();
