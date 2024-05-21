@@ -21,6 +21,7 @@ namespace Gremlin.Net.Extensions
 
             var arguments = new Dictionary<string, object>();
             var first = true;
+            var stepIndex = 0;
 
             foreach (var step in traversal.Bytecode.StepInstructions)
             {
@@ -56,19 +57,28 @@ namespace Gremlin.Net.Extensions
                     }
                     else
                     {
-                        if (step.OperatorName == "property" || 
+                        if (step.OperatorName == "property" ||
                             (step.OperatorName == "has" && step.Arguments.Last() is string))
                         {
-                            var (key, value) = ((string)step.Arguments.First(), (object)step.Arguments.Last());
+                            var (argName, value) = ((string)step.Arguments.First(), (object)step.Arguments.Last());
+
+                            var key = argName;
 
                             if (innerArgIndex.HasValue)
                             {
                                 key = $"{key}_{innerArgIndex.Value}";
                             }
 
+                            var index = 1;
+
+                            while (arguments.ContainsKey(key))
+                            {
+                                key = $"{argName}_{++index}";
+                            }
+
                             arguments.Add(key, value);
 
-                            builder.Append($"'{step.Arguments.First()}', {key}");
+                            builder.Append($"'{argName}', {key}");
                         }
                         else
                         {
@@ -80,6 +90,7 @@ namespace Gremlin.Net.Extensions
                 }
 
                 builder.Append(")");
+                stepIndex++;
             }
 
             return new GremlinQuery(builder, arguments);
