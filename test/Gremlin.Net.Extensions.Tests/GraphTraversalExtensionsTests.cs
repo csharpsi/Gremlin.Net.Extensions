@@ -94,7 +94,7 @@ namespace Gremlin.Net.Extensions.Tests
         public void TestToGremlinQueryComplex()
         {
             var query = _g.V("thomas").OutE("knows").Where(InV().Has("id", "mary")).Drop().ToGremlinQuery();
-            
+
             query.ToString().Should().Be("g.V('thomas').outE('knows').where(inV().has('id', id_1)).drop()");
 
             query.Arguments
@@ -151,21 +151,44 @@ namespace Gremlin.Net.Extensions.Tests
         public void TestToGremlinQueryCoalesce()
         {
             var query = _g.V("thomas")
+                .Has("id", "123")
                 .Coalesce<string>(
                     Has("id", "robin"),
                     Has("id", "leon"))
                 .ToGremlinQuery();
 
-            query.ToString().Should().Be("g.V('thomas').coalesce(has('id', id_1), has('id', id_2))");
+            query.ToString().Should().Be("g.V('thomas').has('id', id).coalesce(has('id', id_1), has('id', id_2))");
 
             IReadOnlyDictionary<string, object> expectedArguments = new Dictionary<string, object>
             {
+                ["id"] = "123",
                 ["id_1"] = "robin",
                 ["id_2"] = "leon"
             };
 
             query.Arguments.Should().BeEquivalentTo(expectedArguments);
 
+        }
+
+        [Fact]
+        public void TestToGremlinMultipleArguments()
+        {
+            var query = _g.V("person")
+                    .Has("name", "Thomas")
+                    .Out("friend")
+                    .Has("name", "Mary")
+                    .Out("parent")
+                    .Has("name", "Steve")
+                    .ToGremlinQuery();
+
+            query.ToString().Should().Be("g.V('person').has('name', name).out('friend').has('name', name_2).out('parent').has('name', name_3)");
+
+            query.Arguments.Should().BeEquivalentTo(new Dictionary<string, object>
+            {
+                ["name"] = "Thomas",
+                ["name_2"] = "Mary",
+                ["name_3"] = "Steve"
+            });
         }
     }
 }
